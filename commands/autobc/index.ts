@@ -5,7 +5,7 @@ import CommandHandler from "../../../../commandhandler";
 import CommandHandlers from "../../../../commandhandlers";
 
 class AutobroadcastCommand extends CommandHandler {
-    public name = "autobc";
+    public names = ["autobc"];
     public permission = "autobroadcast.reload";
     private _autobroadcast: Autobroadcast;
 

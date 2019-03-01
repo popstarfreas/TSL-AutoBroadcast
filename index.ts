@@ -1,11 +1,4 @@
-import * as bcrypt from "bcrypt";
-import PacketWriter from "dimensions/packets/packetwriter";
-import PacketTypes from "dimensions/packettypes";
 import * as fs from "fs";
-import * as Winston from "winston";
-import ChatMessage from "../../chatmessage";
-import Client from "../../client";
-import Database from "../../database";
 import TerrariaServer from "../../terrariaserver";
 import Extension from "../extension";
 
@@ -28,18 +21,19 @@ class Autobroadcast extends Extension {
 
     constructor(server: TerrariaServer) {
         super(server);
-        this.loadBroadcasts();
         this.loadCommands(__dirname);
 
-        for (const broadcast of this.broadcasts) {
-            this._timers.push(setInterval(() => {
-                for (const line of broadcast.lines) {
-                    for (const client of this.server.clients) {
-                        client.sendChatMessage(line, broadcast.color);
+        this.loadBroadcasts().then(() => {
+            for (const broadcast of this.broadcasts) {
+                this._timers.push(setInterval(() => {
+                    for (const line of broadcast.lines) {
+                        for (const client of this.server.clients) {
+                            client.sendChatMessage(line, broadcast.color);
+                        }
                     }
-                }
-            }, broadcast.interval));
-        }
+                }, broadcast.interval));
+            }
+        });
     }
 
     public get broadcasts(): Broadcast[] {
@@ -53,11 +47,12 @@ class Autobroadcast extends Extension {
         }
     }
 
-    public reload(): void {
+    public async reload(): Promise<void> {
         for (const timer of this._timers) {
             clearInterval(timer);
         }
-        this.loadBroadcasts();
+
+        await this.loadBroadcasts();
         for (const broadcast of this.broadcasts) {
             this._timers.push(setInterval(() => {
                 for (const line of broadcast.lines) {
@@ -71,7 +66,7 @@ class Autobroadcast extends Extension {
 
     private async broadcastsFileExists(): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
-            fs.exists("../persistance/broadcasts.json", (exists) => {
+            fs.exists("../persistence/broadcasts.json", (exists) => {
                 resolve(exists);
             });
         });
@@ -79,7 +74,7 @@ class Autobroadcast extends Extension {
 
     private async loadBroadcasts(): Promise<void> {
         if (await this.broadcastsFileExists()) {
-            this.loadBroadcastsFromFile();
+            await this.loadBroadcastsFromFile();
         }
     }
 
@@ -94,7 +89,7 @@ class Autobroadcast extends Extension {
 
     private readBroadcastsFile(): Promise<string> {
         return new Promise<string>((resolve, reject) => {
-            fs.readFile("../persistance/broadcasts.json", (err, data) => {
+            fs.readFile("../persistence/broadcasts.json", (err, data) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -106,7 +101,7 @@ class Autobroadcast extends Extension {
 
     private saveBroadcasts(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            fs.writeFile("../persistance/broadcasts.json", JSON.stringify(this._broadcasts), (err) => {
+            fs.writeFile("../persistence/broadcasts.json", JSON.stringify(this._broadcasts), (err) => {
                 if (err) {
                     reject(err);
                 } else {
