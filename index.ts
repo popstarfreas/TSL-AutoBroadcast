@@ -1,6 +1,6 @@
 import * as fs from "fs";
-import TerrariaServer from "../../terrariaserver";
-import Extension from "../extension";
+import TerrariaServer from "terrariaserver-lite/terrariaserver";
+import Extension from "terrariaserver-lite/extensions/extension";
 
 interface Broadcast {
     lines: string[];

@@ -1,8 +1,8 @@
 import Autobroadcast from "../../";
-import Client from "../../../../client";
-import Command from "../../../../command";
-import CommandHandler from "../../../../commandhandler";
-import CommandHandlers from "../../../../commandhandlers";
+import Client from "terrariaserver-lite/client";
+import Command from "terrariaserver-lite/command";
+import CommandHandler from "terrariaserver-lite/commandhandler";
+import CommandHandlers from "terrariaserver-lite/commandhandlers";
 
 class AutobroadcastCommand extends CommandHandler {
     public names = ["autobc"];
