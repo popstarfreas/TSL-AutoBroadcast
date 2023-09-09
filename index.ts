@@ -17,7 +17,7 @@ class Autobroadcast extends Extension {
     public version = "v1.2";
     public path = "";
     private _broadcasts: Broadcast[] = [];
-    private _timers: NodeJS.Timer[] = [];
+    private _timers: NodeJS.Timeout[] = [];
 
     constructor(server: TerrariaServer) {
         super(server);
