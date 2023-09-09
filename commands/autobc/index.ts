@@ -14,7 +14,7 @@ class AutobroadcastCommand extends CommandHandler {
         this._autobroadcast = autobroadcast;
     }
 
-    public handle(command: Command, client: Client): void {
+    public handle(_command: Command, _client: Client): void {
         this._autobroadcast.reload();
     }
 }
