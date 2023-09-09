@@ -14,7 +14,7 @@ interface Broadcast {
 
 class Autobroadcast extends Extension {
     public name = "Autobroadcast";
-    public version = "v1.0";
+    public version = "v1.2";
     public path = "";
     private _broadcasts: Broadcast[] = [];
     private _timers: NodeJS.Timer[] = [];
