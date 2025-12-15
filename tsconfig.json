@@ -1,11 +1,19 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
         "target": "es2020",
         "noImplicitAny": false,
         "sourceMap": false,
         "outDir": "build",
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "terrariaserver-lite/*": [
+                "TerrariaServer-Lite/app/*"
+            ]
+        }
     },
     "include": [
         "**/*.ts",
